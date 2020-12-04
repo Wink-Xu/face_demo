@@ -9,7 +9,6 @@ A small demo to compare the the similarity of two image .
 * face feature
 
 ## Usage
-
 get face keypoints, align face and get features
 ```
 cd core
