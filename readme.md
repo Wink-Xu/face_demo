@@ -2,22 +2,15 @@
 
 A small demo to compare the the similarity of two image .
 
-## Content
+## Three process  
 
-├── faceRecognition
-│   ├── core
-│       ├──  getKeypoints.py
-│       ├──  alignFace.py
-│       ├──  getFeature.py
-│       ├──  faceRecognition.py
-│   ├── model    
-│   ├── results
-│   ├── sample
-
+* face keypoints   
+* face align   
+* face feature
 
 ## Usage
 
-Three process 1.keypoints 2.align 3.feature
+get face keypoints, align face and get features
 ```
 cd core
 sh run.sh
