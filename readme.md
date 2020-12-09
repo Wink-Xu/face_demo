@@ -19,3 +19,8 @@ Compare the similarity of two image
 cd core
 sh compare.sh
 ```
+
+
+##
+
+Run in cpu, if you want to run in GPU, set the use_gpu=1 in getKeypoint.py and getFeture.py.  (lazy to modify)

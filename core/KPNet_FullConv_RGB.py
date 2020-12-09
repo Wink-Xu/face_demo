@@ -81,7 +81,7 @@ class KPNet_FullConv_RGB_8x8(nn.Module):
         )
 
     def forward(self, x):
-        import pdb; pdb.set_trace()
+ #       import pdb; pdb.set_trace()
         x=self.head(x)
         y=self.output(x)
         return y

@@ -24,10 +24,6 @@ import json
 import argparse
 
 
-
-
-
-
 #输入只和网络相关,Tensor
 def getfeature(input,model):
     tmp=torch.zeros(input.size()[0]).long().cuda()
@@ -35,23 +31,32 @@ def getfeature(input,model):
     return features.cpu().data.numpy()
 
 
-def loadmodel(modelpath):
-    model=torch.load(modelpath)
-    # if len(args.gpu_ids)>1:
-    #     model=DataParallel(model)
-  #  model = model.module
-    model.cuda()
-    model.eval()
+def loadmodel(modelpath, use_gpu):
+    if use_gpu:       
+        model=torch.load(modelpath)
+        # if len(args.gpu_ids)>1:
+        #     model=DataParallel(model)
+    #  model = model.module
+        model.cuda()
+        model.eval()
+    else:
+        model = torch.load(modelpath, map_location=torch.device('cpu'))
+        device = torch.device('cpu')
+        model.to(device)
+        model.eval()
     return model
 
 
 
 def get_faceFeature(img):
-
-    os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+    use_gpu = 0
+    if use_gpu:
+        os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+    else:
+        device = torch.device('cpu')
     modelpath='../model/arcface_r100_ms1m_atthead2_7_trans.pkl'
 
-    model=loadmodel(modelpath)
+    model=loadmodel(modelpath, use_gpu)
 
     imgarr=np.zeros((1,3,112,112))
     img = img.resize((112, 112))
@@ -60,7 +65,10 @@ def get_faceFeature(img):
     img=np.flip(img,axis=0).copy()
     img=np.flip(img,axis=2).copy()
     imgarr = (img-127.5)/128
-    input = torch.Tensor(imgarr).float().cuda()
+    if use_gpu:
+        input = torch.Tensor(imgarr).float().cuda()
+    else:
+        input=torch.Tensor(imgarr).float().to(device)
 
     features_out = getfeature(input, model)
     #import pdb; pdb.set_trace()

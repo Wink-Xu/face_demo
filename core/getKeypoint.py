@@ -74,13 +74,13 @@ def get_keypoint(img, imgorg_size = [96, 96, 32, 32], factor = 100):
                 key: 图像名称
                 value: 一个list， 数据维度 1*11，为关键点+关键点得分
     """
-    use_gpu = 1
+    use_gpu = 0
 
-    modelpre=torch.load('../model/kp_bgr_8x8_epoch_100.pkl')
-    #modelpre = torch.load('../model/kp_bgr_8x8_epoch_100.pkl', map_location=lambda storage, loc: storage)
     if use_gpu:
+        modelpre=torch.load('../model/kp_bgr_8x8_epoch_100.pkl')
         modelpre.cuda()
     else:
+        modelpre = torch.load('../model/kp_bgr_8x8_epoch_100.pkl',map_location=torch.device('cpu'))
         device = torch.device('cpu')
         modelpre.to(device)
     sd_pre=modelpre.state_dict()
