@@ -25,8 +25,11 @@ import argparse
 
 
 #输入只和网络相关,Tensor
-def getfeature(input,model):
-    tmp=torch.zeros(input.size()[0]).long().cuda()
+def getfeature(input,model, use_gpu):
+    if use_gpu:
+        tmp=torch.zeros(input.size()[0]).long().cuda()
+    else:
+        tmp=torch.zeros(input.size()[0]).long().cpu()
     y,features=model(input,tmp)
     return features.cpu().data.numpy()
 
@@ -70,7 +73,7 @@ def get_faceFeature(img):
     else:
         input=torch.Tensor(imgarr).float().to(device)
 
-    features_out = getfeature(input, model)
+    features_out = getfeature(input, model, use_gpu)
     #import pdb; pdb.set_trace()
     return features_out
 
